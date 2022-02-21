@@ -2,56 +2,138 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Blank HTML5</title>
+        <title>Vision Therapy - Grid Letter Search</title>
 <style>
-div {
+
+body {
+	font-family: Verdana, Helvetica;
+	font-size: 14pt;
+}
+
+#content {
 	font-family: monospace;
 	font-size: 12pt;
 	letter-spacing: 3pt;
+	margin-top: 10px;
 }
+
+.highlight {
+	color: red;
+}
+
+.answer {
+	color: green;
+}
+
+
 </style>
     </head>
     <body>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
-$(document).ready(function() {
-alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
 num_cols = 12
 num_rows = 8
-num_squares = 10
-console.log("Foo")
-for (i = 0 ; i < num_squares ; i++ ) {
+
+row = 0
+col = 0
+
+
+
+function getSquare(num_rows, num_cols) {
+	alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	s = ""
-	console.log("i = " + i)
-	for (r = 0 ; r < num_rows ; r++ ) {
-		console.log("r = " + r)
-		for ( c = 0 ; c < num_cols ; c++ ) {
-			console.log("c = " + c)
-			s += alpha.substr(Math.floor(Math.random()*alpha.length), 1)
+	for (r = 1 ; r <= num_rows ; r++ ) {
+		for ( c = 1 ; c <= num_cols ; c++ ) {
+			s += "<span class=\"letter row-" + r + " col-" + c + "\">" + alpha.substr(Math.floor(Math.random()*alpha.length), 1) + "</span>"
 		}
-		s += "<br />\n"
+		s += "<br />"
 	}
-
-	row = Math.floor(Math.random() * num_rows)
-	col = Math.floor(Math.random() * num_cols)
-	answer = "Square #" + (i+1) + " = " + s.split("\n")[row][col] + "<br /><br />\n"
-
-	for (j = 0 ; j < num_cols ; j++) {
-		s+= "-"
-	}
-	s += "<br />\n"
-	s += "Row " + (row+1) + ", Col " + (col+1)
-	s += "<br />Answer: ___ <br />\n"
-	s += "<br /><br />\n"
-
-	$("#content").append(s);
-	$("#answers").append(answer);
+	return s
 }
 
+function checkAnswer() {
+	answer = $(".letter.row-" + row + ".col-" + col).html()
+	$(".letter.row-" + row).addClass("highlight")
+	$(".letter.col-" + col).addClass("highlight")
+	$(".letter.row-" + row + ".col-" + col).addClass("answer")
+	$("#answer").html("<br /><br />The answer is " + answer)
+	if (answer.toUpperCase() == $("#useranswer").val().toUpperCase() ) {
+		$("#answer").append("&nbsp;&nbsp;✅")
+	} else {
+		$("#answer").append("&nbsp;&nbsp;❌")
+	}
+	$("#reset").show()
+}
+
+function pickAnswer() {
+	row = Math.floor(Math.random() * num_rows) + 1
+	col = Math.floor(Math.random() * num_cols) + 1	
+}
+
+function setStage() {
+	pickAnswer()
+	s = getSquare(num_rows, num_cols)
+	$("#content").html(s)
+	$("#instructions").html("row <strong>" + row + "</strong> column <strong>" + col + "</strong>")
+	$("#answer").html("")
+	$("#reset").hide()
+	$("#useranswer").val("")
+}
+
+
+function applySettings() {
+	num_rows = $("#row-count").val();
+	num_cols = $("#col-count").val();
+	setStage()
+	$(".letter").css("font-size", $("#font-size").val() + "pt");
+}
+
+$(document).ready(function() {
+	
+	// Hide settings by default
+	$("#settings").hide()
+
+	// Wire up events
+	$("#check").click(function() {
+		checkAnswer()
+	})
+	$("#useranswer").keydown(function(e) {
+		if (e.which === 13) {
+			checkAnswer()
+		}
+	})
+	$("#reset").click(function() {
+		applySettings()
+	})
+	$("#setting-toggle").click(function() {
+		$("#settings").toggle()
+	})
+	$("#apply-settings").click(function() {
+		applySettings()
+	})
+
+	// Draw initial page
+	applySettings()
 });
+
 </script>
+	<a href="#" id="setting-toggle">Toggle Settings</a>
+	<div id="settings">
+		Font Size <input type="text" id="font-size" value="14" maxlength="3" size="5" /><br />
+		Rows <input type="text" id="row-count" value="8" maxlength="3" size="5" /><br />
+		Cols <input type="text" id="col-count" value="8" maxlength="3" size="5" /><br />
+		<a href="#" id="apply-settings">Apply</a>
+	</div>
 	<div id="content"></div>
-	<br /><br /><br />
-	<div id="answers"></div>
+	<br /><br />
+	<div id="instructions"></div>
+	<div id="user-form">
+		Your answer <input type="text" size="3" maxlength="1" id="useranswer" />
+		<a id="check" href="#">Check</a>
+		&nbsp;&nbsp;
+		<a href="#" id="reset">Try again?</a>
+	</div>
+	<div id="answer"></div>
     </body>
 </html>
