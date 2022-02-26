@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Vision Therapy - Grid Letter Search</title>
+<style>
+
+body {
+	font-family: Verdana, Helvetica;
+	font-size: 14pt;
+}
+
+#content {
+	font-size: 12pt;
+	margin-top: 10px;
+	width: 800px;
+	word-wrap: break-word;
+}
+
+
+</style>
+    </head>
+    <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+
+alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+wordlist = [ "abate", "aberration", "abhor", "abhorrence", "abstruse", "accost", "acrimony", "acumen", "adamant", "adept", "adroit", "affected", "alacrity", "allocate", "altruistic", "altruism", "amenable", "amiable", "amicable", "antediluvian", "anthropology", "antipathy", "apathetic", "apathy", "apt", "arcane", "ascendancy", "ascetic", "asceticism", "aspire", "assail", "assiduous", "assuage", "atrophy", "attenuate", "august", "aura", "auspicious", "autocrat", "autocratic", "automaton", "avarice", "banal", "barrage", "belie", "belligerent", "benevolent", "bequeath", "berate", "bipartisanship", "blighted", "bog", "bolster", "bombastic", "boorish", "boorishness", "buoyant", "burgeon", "buttress", "byzantine", "cacophonous", "cacophony", "cajole", "callous", "cantankerous", "capricious", "castigate", "caustic", "censorious", "censure", "cerebral", "chagrin", "charlatan", "chastise", "chide", "churlish", "circuitous", "circumscribe", "circumvent", "clandestine", "coalesce", "compendious", "complacency", "complacent", "compliant", "compliance", "conciliate", "conciliatory", "concur", "conflagration", "confluence", "congenial", "conscientious", "consternation", "contempt", "contemptible", "contentious", "convivial", "copious", "corroborate", "cosmopolitan", "credulity", "credulous", "culpable", "cursory", "dauntless", "dearth", "debacle", "debilitate", "debunk", "decimate", "decorum", "decorous", "deference", "deferential", "degradation", "deleterious", "delineate", "demonstrative", "demure", "demurral", "demystify", "denigrate", "depose", "depravity", "deprecate", "depreciation", "depreciatory", "deride", "derivative", "derogatory", "derogate", "desecration", "despondent", "despot", "destitute", "deterrent", "devoid", "didactic", "diffident", "diffidence", "diffuse", "digress", "dilatory", "diminutive", "diminution", "dire", "discern", "discerning", "discomfited", "discount ", "disheartening", "disillusionment", "disingenuous", "disparage", "dispassionate", "dispel", "disputatious", "disquiet", "disseminate", "distaste", "divergent", "divisive", "divulge", "doctrine", "dogmatic", "dormant", "dupe", "duplicitous", "duplicity", "ebullient", "eclectic", "efface", "effervesce", "egalitarian", "elated", "elation", "elicit", "elucidate", "elude", "elusive", "embitter", "embroil", "empathetic", "empathy", "empiric", "encompass", "encroaching", "encumbrance", "enigma", "enumerate", "ephemeral", "epiphany", "epitome", "epitomize", "equanimity", "equitable", "equivocal", "erudite", "erudition", "esoteric", "estrange", "estrangement", "eulogy", "eulogize", "evoke", "exacting", "excavate", "exemplar", "exhibitionist", "exhibitionistic", "exhort", "exorbitant", "expedient", "exposé", "extol", "extricate", "facile", "faction", "fallacious", "fallacy", "fanaticism", "fastidious", "fathom ", "felicitous", "finesse", "flagrant", "flippant", "flippancy", "florid", "flummox", "folly", "foolhardy", "forlorn", "fortitude", "fortuitous", "fraudulent", "frugal", "furor", "furtive", "futile", "futility", "gait", "gallant", "gargantuan", "garish", "genial", "germinate", "glutton", "grandiose", "hackneyed", "hamper ", "hardy", "hasten", "heresy", "heretic", "histrionic", "hubris", "idiosyncracy", "idiosyncratic", "idyllic", "ignominy", "ignominious", "illicit", "impasse", "imperious", "impetuous", "impudence", "impudent", "inane", "incongruity", "incongruous", "incredulous", "incredulity", "incriminate", "incubate", "indeterminate", "indict", "indigenous", "indignant", "indiscriminate", "indolent", "indomitable", "induce", "indulgent", "ineffable", "ineptitude", "inert", "inertia", "ingenuous", "inherent", "inhibit", "innate", "innocuous", "innuendo", "inscrutable", "insipid", "insolence", "insolent", "instigate", "insular", "intrepid", "inundate", "invoke", "irate", "irony", "ironic", "irreverent", "irreverence", "jaded", "jocular", "jovial", "judicious", "lackadaisical", "laconic", "laggard", "languid", "latent", "latency", "laud", "laudatory", "listless", "lithe", "lucid", "lucrative", "lull", "lurid", "luxuriant", "magnanimity", "magnanimous", "malleable", "marred", "maudlin", "melancholy", "mercenary", "mercurial", "miserly", "mitigate", "mitigator", "modicum", "morose", "motley", "multifarious", "nebulous", "nefarious", "neophyte", "notoriety", "notorious", "noxious", "nuance", "obdurate", "obstinate ", "officious", "onerous", "opportunist", "opportunistic", "oracle", "orthodox", "ostensible", "oversight", "pacifist", "pacify", "painstaking", "palliate", "palliative", "paradigm", "parch", "parody", "partisan", "patronize", "paucity", "pedant", "pedantic", "pedantry", "peevish", "penchant", "penurious", "peremptory", "perfunctory", "peripheral", "perquisite", "petulant", "philanthropist", "philanthropic", "piety", "pious", "placate", "placid", "plasticity", "plausible", "plausibility", "plethora", "plethoric", "pliable", "pliant", "polemical", "prattle", "precarious", "precipitate", "preclude", "precocious", "presumptuous", "pretext", "prevaricator", "procure", "prodigious", "profound", "profundity", "profuse", "profusion", "prohibitive", "prohibition", "proliferate", "proliferation", "prolific", "pronouncement", "propensity", "proponent", "prosaic", "prospective", "provident", "provincial", "punctilious", "pundit", "quell", "quixotic", "rampant", "ramshackle", "rancor", "rapport", "ratify", "raucous", "ravenous", "raze", "reap", "rebuttal", "recalcitrant", "recant", "recessive", "recluse", "reclusive", "rectify", "rectitude", "redolent", "refutation", "refute", "regressive", "relegate", "relinquish", "renounce", "repertory", "reprehensible", "reprimand", "reproach", "repudiate", "repugnant", "rescind", "reticent", "reticence", "reverent", "rhetoric", "rhetorician", "rouse", "rousing", "sage", "sanctimonious", "sanction ", "sanctity", "sanguine", "satiate", "satire", "satirical", "satirize", "saturate", "scanty", "scathing", "scintillating", "scope", "scrupulous", "scrutinize", "scrutiny", "self-righteous", "self-serving", "serendipity", "servile", "shrewd", "shroud", "simile", "slight ", "slipshod", "solace", "solicitous", "somber", "sophistry", "spartan", "sporadic", "spurious", "spurn", "squander", "stagnant", "stagnation", "stark", "static ", "staunch", "steadfast", "stock ", "strident", "stupefy", "stupefaction", "subservient", "substantiate", "subversive", "succulent", "supercilious", "superfluous", "supplant", "surfeit", "susceptible", "sycophant", "tangential", "teem", "teeming", "temperamental", "temporize", "tenacious", "tenacity", "tenuous", "tirade", "toady", "torpor", "totalitarian", "tout", "tractable", "transient", "treatise", "trepidation", "tribulation", "trifling", "trite", "truculent", "truculence", "ubiquitous", "unabashed", "uncanny", "uncouth", "unfathomable", "ungainly", "unruly", "unwitting", "urbane", "usurp", "vacuous", "vacuity", "vanquish", "vapid", "venal", "venerable", "verbose", "vicarious", "vigilant", "vindicate", "vindication", "vindictive", "virtuoso", "virtuosity", "virulent", "viscous", "vocation", "vying", "waning", "wayward", "wrath", "wry", "zealot" ]
+
+function getRandomString(exclude, length) {
+	ret = ""
+	alpha = alphabet
+	for (j = 0 ; j < exclude.length ; j++) {
+		alpha = alpha.replace(exclude[j], "")
+	}
+	for (j = 0 ; j < length ; j++) {
+		ret += alpha.substr(Math.floor(Math.random()*alphabet.length), 1)
+	}
+	return ret
+}
+
+function getString(word, maxLen) {
+	minInitialPad = 5
+	maxInitialPad = 40
+	minBetweenPad = 5
+	maxBetweenPad = 40
+	ret = "Find: <u>" + word + "</u><br/>"
+	ret += getRandomString(word[0], Math.random()*maxInitialPad + minInitialPad)
+	for (i = 0 ; i < word.length ; i++) {
+		// ret += "<u>" + word[i].toUpperCase() + "</u>"
+		// ^^ turn on for debugging
+		ret += word[i]
+		if (i == word.length - 1) {
+			ret += getRandomString("", Math.round(Math.random()*maxBetweenPad) + minBetweenPad)
+		} else {
+			ret += getRandomString(word[i+1], Math.round(Math.random()*maxBetweenPad) + minBetweenPad)
+		}
+	}
+	return ret
+}
+
+
+$(document).ready(function() {
+	c = ""
+	for (n = 0 ; n < 10 ; n++) {
+		word = wordlist[Math.round(Math.random() * wordlist.length)]
+		c += getString(word, 1000)
+		c += "<br /><br />"
+	}
+	$("#content").html(c)
+});
+
+</script>
+	<body>
+	<div id="content"></div>
+    </body>
+</html>

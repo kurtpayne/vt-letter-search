@@ -34,18 +34,17 @@ body {
 
 num_cols = 12
 num_rows = 8
+alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 row = 0
 col = 0
 
 
-
 function getSquare(num_rows, num_cols) {
-	alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	s = ""
 	for (r = 1 ; r <= num_rows ; r++ ) {
 		for ( c = 1 ; c <= num_cols ; c++ ) {
-			s += "<span class=\"letter row-" + r + " col-" + c + "\">" + alpha.substr(Math.floor(Math.random()*alpha.length), 1) + "</span>"
+			s += "<span class=\"letter row-" + r + " col-" + c + "\">" + alphabet.substr(Math.floor(Math.random()*alphabet.length), 1) + "</span>"
 		}
 		s += "<br />"
 	}
@@ -85,12 +84,39 @@ function setStage() {
 function applySettings() {
 	num_rows = $("#row-count").val();
 	num_cols = $("#col-count").val();
+	alphabet = $("#alphabet").val();
 	setStage()
 	$(".letter").css("font-size", $("#font-size").val() + "pt");
+	saveSettings();
+}
+
+function saveSettings() {
+	localStorage.setItem("rowCount", $("#row-count").val())
+	localStorage.setItem("colCount", $("#col-count").val())
+	localStorage.setItem("fontSize", $("#font-size").val())
+	localStorage.setItem("alphabet", $("#alphabet").val())
+}
+
+function loadSettings() {
+	if (localStorage.getItem("rowCount")) {
+		$("#row-count").val(localStorage.getItem("rowCount"))
+	}
+	if (localStorage.getItem("colCount")) {
+		$("#col-count").val(localStorage.getItem("colCount"))
+	}
+	if (localStorage.getItem("fontSize")) {
+		$("#font-size").val(localStorage.getItem("fontSize"))
+	}
+	if (localStorage.getItem("alphabet")) {
+		$("#alphabet").val(localStorage.getItem("alphabet"))
+	}
 }
 
 $(document).ready(function() {
 	
+	// Load from localStorage
+	loadSettings()
+
 	// Hide settings by default
 	$("#settings").hide()
 
@@ -123,6 +149,7 @@ $(document).ready(function() {
 		Font Size <input type="text" id="font-size" value="14" maxlength="3" size="5" /><br />
 		Rows <input type="text" id="row-count" value="8" maxlength="3" size="5" /><br />
 		Cols <input type="text" id="col-count" value="8" maxlength="3" size="5" /><br />
+		Alphabet <input type="text" id="alphabet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" maxlength="255" size="50" /><br />
 		<a href="#" id="apply-settings">Apply</a>
 	</div>
 	<div id="content"></div>
